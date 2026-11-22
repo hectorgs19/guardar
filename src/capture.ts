@@ -1,4 +1,4 @@
-import type { ShareIntent } from 'expo-share-intent';
+import type { ShareIntent } from './share';
 import { clasificar, detectarOrigen } from './classify';
 import { actualizarMetadatos, existeUrl, insertar } from './db';
 import { obtenerMetadatos } from './metadata';
