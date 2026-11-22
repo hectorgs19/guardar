@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { ShareIntentProvider, useShareIntentContext } from 'expo-share-intent';
+import { ShareIntentProvider, useShareIntentContext } from './src/share';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
