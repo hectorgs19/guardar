@@ -14,7 +14,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import * as ExpoLinking from 'expo-linking';
 import { guardarCompartido } from './src/capture';
+import { leerEnlaceGuardar } from './src/deeplink';
 import { TIPOS, type Tipo } from './src/classify';
 import { borrar, cambiarTipo, type Elemento, listar, marcarVisto, olvidados } from './src/db';
 
@@ -55,6 +57,18 @@ function Inicio() {
       resetShareIntent();
     });
   }, [hasShareIntent]);
+
+  // Lo que llega desde el Atajo de iOS (guardapp://guardar?url=...).
+  const enlaceEntrante = ExpoLinking.useLinkingURL();
+  useEffect(() => {
+    const datos = leerEnlaceGuardar(enlaceEntrante);
+    if (!datos) return;
+    guardarCompartido({ ...datos, meta: null }, refrescar).then((r) => {
+      if (r.estado === 'guardado') avisar('Guardado en GuardApp');
+      if (r.estado === 'duplicado') avisar('Ya lo tenías guardado');
+      refrescar();
+    });
+  }, [enlaceEntrante]);
 
   useEffect(() => {
     if (error) avisar(`Error al recibir: ${error}`);

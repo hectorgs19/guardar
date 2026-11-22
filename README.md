@@ -39,6 +39,27 @@ Apple solo deja instalar apps propias de dos formas:
 1. **Con cuenta de Apple Developer (99 €/año):** `npx eas-cli@latest device:create` para registrar tu iPhone y luego `npx eas-cli@latest build -p ios --profile preview`. EAS crea los certificados y el App Group (`group.com.guardapp.app`) que necesita la extensión.
 2. **Con un Mac y tu Apple ID gratis:** `npx expo prebuild` y `npx expo run:ios --device`, eligiendo tu equipo en Xcode (destino y extensión `GuardAppShare`). La app caduca a los 7 días y hay que reinstalarla.
 
+### iPhone gratis (sin cuenta de pago) + Atajo para compartir
+
+Las cuentas gratuitas de Apple no permiten la extensión de Compartir (necesita App Groups). Se puede instalar sin ella y compartir con un Atajo de iOS:
+
+```bash
+GUARDAPP_SIN_EXTENSION=1 npx expo prebuild --clean -p ios
+GUARDAPP_SIN_EXTENSION=1 npx expo run:ios --device --configuration Release
+```
+
+(Requiere Modo de desarrollador en el iPhone y tu Apple ID en Xcode como "Personal Team". La app caduca a los 7 días: repite el segundo comando para reinstalarla.)
+
+Crear el Atajo en la app **Atajos** del iPhone:
+
+1. Pulsa **+** para crear un atajo nuevo y llámalo **GuardApp**.
+2. Pulsa el icono **(i)** de abajo y activa **Mostrar en hoja de compartir**. En los tipos, deja **URL** y **Texto**.
+3. Añade la acción **Codificar URL** (búscala como "codificar") con la entrada **Entrada del atajo**.
+4. Añade la acción **Abrir URL** y escribe `guardapp://guardar?url=` seguido de la variable **URL codificada**.
+5. Guarda. Desde Instagram, TikTok o Safari: **Compartir → GuardApp** (puede estar al final de la fila de acciones; usa "Editar acciones" para subirlo).
+
+La app también acepta `guardapp://guardar?texto=...` para notas sueltas.
+
 ### Desarrollo
 
 ```bash
